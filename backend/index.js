@@ -54,7 +54,7 @@ const analyzeContent = async (fileUri) => {
       },
       {
         text: `
-          Analyze the following content and determine if it is child-friendly. Return a rating from 1 to 10 and "TRUE" if the content is suitable for children, and "FALSE" if it is not. Consider the following criteria:
+          Analyze the following content and determine if it is child-friendly. Return a rating from 10 to 1 and "TRUE" if the content is suitable for children, and "FALSE" if it is not. Consider the following criteria:
           {
             "explicit": {
               "rating": "",
