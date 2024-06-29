@@ -54,7 +54,12 @@ const analyzeContent = async (fileUri) => {
       },
       {
         text: `
-          Analyze the following content and determine if it is child-friendly. Return a rating from 10 to 1 and "TRUE" if the content is suitable for children, and "FALSE" if it is not. Consider the following criteria:
+          Analyze the following content and determine if it is child-friendly.
+          Return a rating from 1 to 10 and "TRUE" if the content is suitable for children, and "FALSE" if it is not.
+          Ratings shouldn't match and must be dynamic according to the file sent. The description should be specific 
+          about the content.
+          Don't use backticks or the word json in the generated output. 
+          just a raw json output without any formatting. Consider the following criteria:
           {
             "explicit": {
               "rating": "",
@@ -72,7 +77,7 @@ const analyzeContent = async (fileUri) => {
               "rating": "",
               "description": "The reason for rating"
             },
-            "Overall": {
+            "overall": {
               "rating": "",
               "description": "The reason for rating"
             }

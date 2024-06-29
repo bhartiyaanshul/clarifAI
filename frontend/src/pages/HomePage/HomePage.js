@@ -2,6 +2,16 @@ import React, { useState, useEffect } from 'react';
 import './HomePage.css';
 import { Radar } from 'react-chartjs-2';
 import Chart from 'chart.js/auto';
+import { ArrowIcon, LogoIcon } from '../../icons/icons'
+
+const RatingTile = (ratingObject) => {
+  return (
+    <div>
+     <span>
+      </span> 
+      </div>
+  )
+}
 
 const HomePage = () => {
   const [fileUrl, setFile] = useState("");
@@ -23,6 +33,8 @@ const HomePage = () => {
   };
 
   const fileSubmitted = async () => {
+    try{
+
     const blob = new Blob([fileUrl], { type: fileUrl.type });
     const arrayBuffer = await blob.arrayBuffer();
     const base64 = arrayBufferToBase64(arrayBuffer);
@@ -33,7 +45,7 @@ const HomePage = () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        blob: base64,
+        blob: base64, 
         name: fileUrl.name,
         type: fileUrl.type,
       }),
@@ -41,6 +53,16 @@ const HomePage = () => {
 
     const jsonResponse = await response.json();
     setFileData(jsonResponse);
+    } catch(err) {
+      console.error(err)
+      setFileData(`
+          {
+          "Violence or Contnent restricted": {
+              "Reason": "Content rating was restricted due to the presence of highly violent or unknown content"
+          }
+        }
+        `)
+    }
   };
 
   const getChartData = (data) => {
@@ -48,7 +70,7 @@ const HomePage = () => {
     const response = data.response;
     const candidates = response.candidates[0].content.parts[0].text;
     const parsedCandidates = JSON.parse(candidates);
-    
+
     const labels = Object.keys(parsedCandidates);
     const values = Object.values(parsedCandidates).map(candidate => candidate.rating);
 
@@ -67,8 +89,16 @@ const HomePage = () => {
   const renderResponse = (data) => {
     if (!data) return null;
 
+    console.log("Data", data)
+
     const response = data.response;
-    const candidates = response.candidates[0].content.parts[0].text;
+    console.log("Response", response)
+    const candidates = response
+    .candidates[0]
+    .content
+    .parts[0]
+    .text
+
     const parsedCandidates = JSON.parse(candidates);
 
     return (
@@ -87,25 +117,29 @@ const HomePage = () => {
   return (
     <div className='homepage'>
       <div className='main-container'>
-        <div className='chart-container'>
-          {filedata && (
-            <Radar
-              data={getChartData(filedata)}
-              options={{
-                scale: {
-                  ticks: { beginAtZero: true }
-                }
-              }}
-            />
-          )}
+        <div className='landing-page-logo'>
+          <LogoIcon />
+          <div>Clarif.ai</div>
         </div>
-        <div className='content-container'>
-          <div className='upload-file'>
-            <input type='file' id='i_file' onChange={getURL} />
-            <button type='button' onClick={fileSubmitted}>Submit</button>
-          </div>
+        <div className='upload-image'>
+          <input type='file' id='i_file' className='upload-input' onChange={getURL} />
+          <button type='button' className='upload-button' onClick={fileSubmitted}>Upload</button>
+        </div>
+        <div className='display-container'>
           <div className='result-container'>
             {renderResponse(filedata)}
+          </div>
+          <div className='chart-container'>
+            {filedata && (
+              <Radar
+                data={getChartData(filedata)}
+                options={{
+                  scale: {
+                    ticks: { beginAtZero: true }
+                  }
+                }}
+              />
+            )}
           </div>
         </div>
       </div>

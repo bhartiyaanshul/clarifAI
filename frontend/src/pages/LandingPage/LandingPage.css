@@ -27,7 +27,7 @@
     color: white;
 }
 
-button {
+.explore-buttom {
     border: none;
     border-radius: 50px;
     align-items: center;
@@ -39,7 +39,7 @@ button {
     display: flex;
 }
 
-button:hover{
+.explore-buttom:hover{
     transition: 0.40s;
     padding: 15px 35px;
     gap: 15px;

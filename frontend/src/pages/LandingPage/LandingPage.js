@@ -12,7 +12,12 @@ const LandingPage = () => {
       <div className='content'>
         <div>Revolutionising Content Moderation with AI
         </div>
-        <button>Explore more<ArrowIcon /></button>
+        <a href = "/home" style = {{
+          textDecoration: "none",
+          color: "black"
+        }}>
+        <button className='explore-buttom'>Explore more<ArrowIcon /></button>
+        </a>
       </div>
     </div>
   )
